@@ -5,6 +5,8 @@ import Layout from './layout/Layout';
 import Intro from './pages/intro/Intro';
 import Splash from './pages/splash/Splash';
 import Home from './pages/home/Home';
+import Profil from './pages/profil/Profil';
+
 
 export default function App() {
   const router = createBrowserRouter(
@@ -14,6 +16,7 @@ export default function App() {
         <Route path="/intro" element={<Intro/>}/>
         <Route element={<Layout />}>
           <Route path="/Home" element={<Home/>}/>
+          <Route path="/Profil" element={<Profil/>}/>
         </Route>
       </>
     )
