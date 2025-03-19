@@ -8,9 +8,11 @@ export default function Home() {
 
     return (
         <>
-            <section className="m-10">
-                <p className="text-4xl font-bold">Welcome!</p>
-            </section>
+            {!isSearching && (
+                <section className="m-8">
+                    <p className="text-4xl font-bold">Welcome!</p>
+                </section>
+            )}
             <SearchCategories />
             {!isSearching && <Trending />}
         </>

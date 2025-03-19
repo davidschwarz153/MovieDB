@@ -54,7 +54,7 @@ export default function SearchCategories() {
     };
 
     return (
-        <div className="flex flex-col gap-4 p-4">
+        <div className="flex flex-col gap-4 p-4 mb-4">
             <h1 className="text-xl font-bold">Genres / Search</h1>
             
             <div className="relative w-full">
