@@ -15,7 +15,7 @@ export default function Nav() {
         <img src="/Vector (1).png" alt="Favorites" />
       </Link>
 
-      <Link to="" className="cursor-pointer">
+      <Link to="/Profil" className="cursor-pointer">
         <img src="/Profile.png" alt="Profile" />
       </Link>
     </nav>
