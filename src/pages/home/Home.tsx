@@ -1,4 +1,5 @@
 import SearchCategories from "../../components/searchCategories/SearchCategories";
+import Trending from "../../components/trending/Trending";
 
 
 export default function Home() {
@@ -10,6 +11,7 @@ export default function Home() {
 
     </section>
     <SearchCategories/>
+    <Trending/>
     </>
   )
 }
