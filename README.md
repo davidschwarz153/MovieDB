@@ -87,8 +87,3 @@ Hast du Ideen für neue Features oder Verbesserungen?
 
 ## 💡 Viel Spaß beim Entdecken der Filme!
 
----
-
-## 📄 Lizenz
-
-MIT License - fühle dich frei, das Projekt zu verwenden und weiterzuentwickeln!
