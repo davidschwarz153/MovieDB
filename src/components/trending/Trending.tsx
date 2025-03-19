@@ -1,6 +1,7 @@
 import { mainContext } from "@/context/MainProvider";
 import { useContext } from "react";
 import { IMovie } from "../interfaces/Interface";
+import { useNavigate } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Pagination } from "swiper/modules";
@@ -10,7 +11,13 @@ import "swiper/css/pagination";
 import { Star } from "lucide-react";
 
 export default function Trending() {
-    const { trendingMovies } = useContext(mainContext);
+    const navigate = useNavigate();
+    const { trendingMovies, fetchMovieDetails } = useContext(mainContext);
+
+    const handleMovieClick = async (movieId: number) => {
+        await fetchMovieDetails(movieId);
+        navigate(`/movie/${movieId}`);
+    };
 
     return (
         <section className="mt-6 px-4">
@@ -34,7 +41,10 @@ export default function Trending() {
             >
                 {trendingMovies.map((movie: IMovie) => (
                     <SwiperSlide key={movie.id}>
-                        <div className="relative rounded-2xl overflow-hidden shadow-lg">
+                        <div 
+                            className="relative rounded-2xl overflow-hidden shadow-lg cursor-pointer"
+                            onClick={() => handleMovieClick(movie.id)}
+                        >
                             <img
                                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                                 alt={movie.title}
