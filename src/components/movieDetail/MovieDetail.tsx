@@ -89,7 +89,7 @@ export default function MovieDetail() {
             alt={selectedMovie.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-purple-900/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-500/50 to-transparent" />
         </div>
 
         {/* Movie Details */}
@@ -169,7 +169,7 @@ export default function MovieDetail() {
 
       {/* Trailer Modal */}
       {showTrailer && movieTrailer && (
-        <div className="fixed inset-0 bg-purple-900/95 z-50 flex items-center justify-center backdrop-blur-sm">
+        <div className="fixed inset-0 bg-gray-500/95 z-50 flex items-center justify-center backdrop-blur-sm">
           <button
             onClick={() => setShowTrailer(false)}
             className="absolute top-4 right-4 text-white hover:text-purple-200 transition-colors"

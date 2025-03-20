@@ -10,8 +10,10 @@ export default function Home() {
   return (
     <>
       <Header />
-      <SearchCategories />
-      {!isSearching && <Trending />}
+      <div className="mt-26">
+        <SearchCategories />
+        {!isSearching && <Trending />}
+      </div>
     </>
   );
 }

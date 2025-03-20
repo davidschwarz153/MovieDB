@@ -2,14 +2,51 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { IMovie } from "../components/interfaces/Interface";
 
-export const mainContext = createContext<any>(null);
+export const mainContext = createContext<{
+  trendingMovies: IMovie[];
+  filteredMovies: IMovie[];
+  setFilteredMovies: (movies: IMovie[]) => void;
+  selectedMovie: IMovie | null;
+  setSelectedMovie: (movie: IMovie | null) => void;
+  isSearching: boolean;
+  setIsSearching: (isSearching: boolean) => void;
+  searchMovies: (query: string) => void;
+  filterMoviesByGenre: (genreId: number) => void;
+  selectedGenre: number | null;
+  clearSelectedGenre: () => void;
+  fetchMovieDetails: (movieId: number) => Promise<void>;
+  loading: boolean;
+  movieTrailer: string | null;
+  getAllMovies: () => Promise<void>;
+  loadMoreMovies: () => void;
+  currentPage: number;
+  totalPages: number;
+}>({
+  trendingMovies: [],
+  filteredMovies: [],
+  setFilteredMovies: () => {},
+  selectedMovie: null,
+  setSelectedMovie: () => {},
+  isSearching: false,
+  setIsSearching: () => {},
+  searchMovies: () => {},
+  filterMoviesByGenre: () => {},
+  selectedGenre: null,
+  clearSelectedGenre: () => {},
+  fetchMovieDetails: async () => {},
+  loading: false,
+  movieTrailer: null,
+  getAllMovies: async () => {},
+  loadMoreMovies: () => {},
+  currentPage: 1,
+  totalPages: 1,
+});
 
 export default function MainProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const [allMovies, setAllMovies] = useState<IMovie[]>([]);
   const [filteredMovies, setFilteredMovies] = useState<IMovie[]>([]);
   const [trendingMovies, setTrendingMovies] = useState<IMovie[]>([]);
   const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
@@ -18,6 +55,7 @@ export default function MainProvider({
   const [isSearching, setIsSearching] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
+  const [selectedGenre, setSelectedGenre] = useState<number | null>(null);
 
   const API_HEADERS = {
     accept: "application/json",
@@ -39,7 +77,7 @@ export default function MainProvider({
           headers: API_HEADERS,
         }
       );
-      setAllMovies((prevMovies) =>
+      setFilteredMovies((prevMovies) =>
         currentPage === 1
           ? res.data.results
           : [...prevMovies, ...res.data.results]
@@ -114,28 +152,20 @@ export default function MainProvider({
   };
 
   const searchMovies = async (query: string) => {
-    if (!query) {
-      setFilteredMovies(allMovies);
-      return;
-    }
-
     try {
-      setLoading(true);
-      const res = await axios.get("https://api.themoviedb.org/3/search/movie", {
-        params: {
-          query,
-          language: "en-US",
-          include_adult: false,
-          page: 1,
-        },
+      let url = `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=1`;
+
+      if (selectedGenre) {
+        url += `&with_genres=${selectedGenre}`;
+      }
+
+      const res = await axios.get(url, {
         headers: API_HEADERS,
       });
       setFilteredMovies(res.data.results);
     } catch (error) {
       console.error("Ошибка при поиске фильмов:", error);
       setFilteredMovies([]);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -149,23 +179,53 @@ export default function MainProvider({
     }
   }, [isSearching]);
 
-  const filterMoviesByGenre = (genreId: number) => {
-    const filtered = allMovies.filter((movie) =>
-      movie.genre_ids.includes(genreId)
-    );
-    setFilteredMovies(filtered);
+  const filterMoviesByGenre = async (genreId: number) => {
+    setSelectedGenre(genreId);
+    try {
+      const res = await axios.get(
+        `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&language=en-US&include_adult=false`,
+        {
+          headers: API_HEADERS,
+        }
+      );
+      setFilteredMovies(res.data.results);
+      setIsSearching(true);
+    } catch (error) {
+      console.error("Ошибка при фильтрации фильмов по жанру:", error);
+    }
   };
-  
+
+  const clearSelectedGenre = () => {
+    setSelectedGenre(null);
+    setFilteredMovies([]);
+    setIsSearching(false);
+  };
+
+  useEffect(() => {
+    fetchTrendingMovies();
+  }, []);
+
+  useEffect(() => {
+    if (!isSearching && !selectedGenre) {
+      fetchTrendingMovies();
+    }
+  }, [isSearching, selectedGenre]);
+
+  useEffect(() => {
+    if (isSearching || selectedGenre) {
+      getAllMovies();
+    }
+  }, [currentPage, isSearching, selectedGenre]);
+
   return (
     <mainContext.Provider
       value={{
-        allMovies,
+        trendingMovies,
         filteredMovies,
         setFilteredMovies,
-        trendingMovies,
         loading,
         selectedMovie,
-        fetchMovieDetails,
+        setSelectedMovie,
         isSearching,
         setIsSearching,
         movieTrailer,
@@ -175,6 +235,9 @@ export default function MainProvider({
         currentPage,
         totalPages,
         filterMoviesByGenre,
+        selectedGenre,
+        clearSelectedGenre,
+        fetchMovieDetails,
       }}
     >
       {children}

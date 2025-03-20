@@ -43,3 +43,14 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(147, 51, 234, 0.5);
 }
+
+@layer utilities {
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}

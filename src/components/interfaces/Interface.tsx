@@ -21,3 +21,6 @@ export interface IMovie {
     genres?: Genre[];
     spoken_languages?: Language[];
 } 
+
+
+
