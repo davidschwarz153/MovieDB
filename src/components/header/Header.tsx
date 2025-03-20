@@ -23,7 +23,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
           <h1 className="text-xl md:text-2xl font-bold">
-            Welcome,{" "}
+            {" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-gray-200 to-gray-50">
               {user?.name || "Guest"}
             </span>
