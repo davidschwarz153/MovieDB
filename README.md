@@ -39,7 +39,7 @@ Eine moderne und intuitive Movie-Datenbank-App, die mit **React** und der **TMDb
 ## 🚀 Installation
 
 ```bash
-git clone https://github.com/yourusername/moviedb.git
+git clone https://github.com/davidschwarz153/moviedb.git
 cd moviedb
 npm install
 npm run dev
@@ -87,8 +87,3 @@ Hast du Ideen für neue Features oder Verbesserungen?
 
 ## 💡 Viel Spaß beim Entdecken der Filme!
 
----
-
-## 📄 Lizenz
-
-MIT License - fühle dich frei, das Projekt zu verwenden und weiterzuentwickeln!
