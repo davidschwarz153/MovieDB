@@ -21,6 +21,7 @@ export default function SearchCategories() {
     isSearching,
     setIsSearching,
     searchMovies,
+    filterMoviesByGenre, // Извлекаем функцию фильтрации из контекста
   } = useContext(mainContext);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<number | null>(null);
@@ -88,11 +89,9 @@ export default function SearchCategories() {
     const newCategory = categoryId === selectedCategory ? null : categoryId;
     setSelectedCategory(newCategory);
     setIsSearching(searchTerm.length > 0 || newCategory !== null);
-    if (newCategory !== null && filteredMovies.length > 0) {
-      const filtered = filteredMovies.filter((movie: IMovie) =>
-        movie.genre_ids.includes(newCategory)
-      );
-      setFilteredMovies(filtered);
+    if (newCategory !== null) {
+      // Фильтруем фильмы по жанру
+      filterMoviesByGenre(categoryId); 
     } else if (searchTerm.length >= 2) {
       searchMovies(searchTerm);
     }

@@ -149,6 +149,13 @@ export default function MainProvider({
     }
   }, [isSearching]);
 
+  const filterMoviesByGenre = (genreId: number) => {
+    const filtered = allMovies.filter((movie) =>
+      movie.genre_ids.includes(genreId)
+    );
+    setFilteredMovies(filtered);
+  };
+  
   return (
     <mainContext.Provider
       value={{
@@ -167,6 +174,7 @@ export default function MainProvider({
         loadMoreMovies,
         currentPage,
         totalPages,
+        filterMoviesByGenre,
       }}
     >
       {children}
