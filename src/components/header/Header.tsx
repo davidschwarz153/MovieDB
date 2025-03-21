@@ -20,7 +20,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-6 px-4 md:px-8">
+    <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-10  px-6 md:px-8">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
           {currentUser && (

@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
       <Header />
-      <div className="mt-26">
+      <div className="mt-8">
         <SearchCategories />
         {!isSearching && <Trending />}
       </div>
