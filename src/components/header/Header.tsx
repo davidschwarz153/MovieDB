@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { mainContext } from "../../context/MainProvider";
 import { useUser } from "../../context/UserContext";
-import { LogOut } from "lucide-react";
+import { LogOut, LogIn } from "lucide-react";
 
 export default function Header() {
   const { currentUser, logout } = useUser();
@@ -20,7 +20,7 @@ export default function Header() {
   };
 
   return (
-    <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-10  px-6 md:px-8">
+    <header className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-10 px-6 md:px-8">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         <div className="flex items-center">
           {currentUser && (
@@ -43,13 +43,21 @@ export default function Header() {
           />
         </div>
 
-        {currentUser && (
+        {currentUser ? (
           <button
             onClick={handleLogout}
-            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-all duration-300 shadow-lg hover:shadow-purple-500/50 flex items-center gap-2"
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-all duration-300 hover:shadow-gray-500/50 flex items-center gap-2"
           >
             <LogOut size={20} />
             Logout
+          </button>
+        ) : (
+          <button
+            onClick={() => navigate("/login")}
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-all duration-300 hover:shadow-gray-500/50 flex items-center gap-2"
+          >
+            <LogIn size={20} />
+            Login
           </button>
         )}
       </div>

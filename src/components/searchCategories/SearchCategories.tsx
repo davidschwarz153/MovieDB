@@ -20,10 +20,12 @@ import {
   SortAsc,
   LayoutList,
   LayoutGrid,
+  Heart,
 } from "lucide-react";
 import { IMovie } from "../interfaces/Interface";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import MovieCard from "../movie/MovieCard";
 
 const categories = [
   {
@@ -415,12 +417,35 @@ export default function SearchCategories() {
                   key={movie.id}
                   className="flex gap-2 sm:gap-4 bg-black/60 backdrop-blur-md rounded-xl p-2 sm:p-4 shadow-lg hover:shadow-gray-500/20 transition-all duration-300"
                 >
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                    alt={movie.title}
-                    className="w-16 h-24 sm:w-20 sm:h-28 md:w-24 md:h-32 object-cover rounded-lg cursor-pointer hover:scale-105 transition-transform duration-300"
-                    onClick={() => handleMovieClick(movie.id)}
-                  />
+                  <div className="w-16 h-24 sm:w-20 sm:h-28 md:w-24 md:h-32 relative">
+                    <img
+                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      alt={movie.title}
+                      className="w-full h-full object-cover rounded-lg cursor-pointer"
+                      onClick={() => handleMovieClick(movie.id)}
+                    />
+                    <div className="absolute top-1 right-1 z-[9999]">
+                      <button
+                        onClick={(e) => toggleFavorite(e, movie)}
+                        className="bg-black/60 p-1 rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm"
+                        title={
+                          favorites[movie.id]
+                            ? "Remove from favorites"
+                            : "Add to favorites"
+                        }
+                      >
+                        <img
+                          src="/Vector.png"
+                          alt="Favorites"
+                          className={`w-4 h-4 cursor-pointer transition-all duration-300 ${
+                            favorites[movie.id]
+                              ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                              : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+                          }`}
+                        />
+                      </button>
+                    </div>
+                  </div>
                   <div className="flex flex-col justify-between py-1 flex-1 min-w-0">
                     <div
                       className="cursor-pointer"
@@ -444,18 +469,6 @@ export default function SearchCategories() {
                           {movie.vote_average.toFixed(1)}
                         </span>
                       </div>
-                      {user && (
-                        <img
-                          src="/Vector.png"
-                          alt="Favorites"
-                          onClick={(e) => toggleFavorite(e, movie)}
-                          className={`w-4 h-4 sm:w-5 sm:h-5 cursor-pointer transition-all duration-300 ${
-                            favorites[movie.id]
-                              ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-                              : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
-                          }`}
-                        />
-                      )}
                     </div>
                   </div>
                 </div>
@@ -468,25 +481,35 @@ export default function SearchCategories() {
                   key={movie.id}
                   className="bg-black/60 backdrop-blur-md rounded-xl overflow-hidden shadow-lg hover:shadow-gray-500/20 transition-all duration-300 group"
                 >
-                  <div className="relative">
+                  <div className="relative h-[300px] sm:h-[400px]">
                     <img
                       src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                       alt={movie.title}
-                      className="w-full h-[300px] sm:h-[400px] object-cover cursor-pointer transition-transform duration-500 group-hover:scale-105"
+                      className="w-full h-full object-cover cursor-pointer transition-transform duration-500 group-hover:scale-105"
                       onClick={() => handleMovieClick(movie.id)}
                     />
-                    {user && (
-                      <img
-                        src="/Vector.png"
-                        alt="Favorites"
+                    <div className="absolute top-2 right-2 z-[9999]">
+                      <button
                         onClick={(e) => toggleFavorite(e, movie)}
-                        className={`absolute top-2 right-2 w-6 h-6 sm:w-7 sm:h-7 cursor-pointer transition-all duration-300 ${
+                        className="p-2 transition-colors backdrop-blur-sm"
+                        title={
                           favorites[movie.id]
-                            ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-                            : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
-                        }`}
-                      />
-                    )}
+                            ? "Remove from favorites"
+                            : "Add to favorites"
+                        }
+                      >
+                        <img
+                          src="/Vector.png"
+                          alt="Favorites"
+                          className={`w-6 h-6 cursor-pointer transition-all duration-300 ${
+                            favorites[movie.id]
+                              ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                              : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+                          }`}
+                        />
+                      </button>
+                    </div>
+                    <div className="absolute inset-0 group-hover:bg-opacity-60 transition-all duration-300"></div>
                   </div>
                   <div className="p-4">
                     <h3

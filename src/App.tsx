@@ -14,6 +14,9 @@ import MainProvider from "./context/MainProvider";
 import Login from "./components/auth/Login";
 import Favorites from "./pages/favorites/Favorites";
 import UserDashboard from "./components/dashboard/UserDashboard";
+import Settings from "./pages/settings/Settings";
+import UserManagement from "./components/admin/UserManagement";
+import Nav from "./components/nav/Nav";
 
 function App() {
   return (
@@ -22,6 +25,7 @@ function App() {
         <BackgroundProvider>
           <Router>
             <MainProvider>
+              <Nav />
               <Routes>
                 <Route path="/" element={<Splash />} />
                 <Route path="/intro" element={<Intro />} />
@@ -31,6 +35,8 @@ function App() {
                   <Route path="/movie/:id" element={<MovieDetail />} />
                   <Route path="/favorites" element={<Favorites />} />
                   <Route path="/dashboard" element={<UserDashboard />} />
+                  <Route path="/settings" element={<Settings />} />
+                  <Route path="/admin/users" element={<UserManagement />} />
                 </Route>
                 <Route path="/login" element={<Login />} />
               </Routes>

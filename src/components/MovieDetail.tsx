@@ -1,6 +1,6 @@
 /**
  * MovieDetail Component
- * 
+ *
  * Displays detailed information about a specific movie, including:
  * - Movie poster and backdrop
  * - Title, release date, and runtime
@@ -10,18 +10,19 @@
  * - User interactions (favorites, ratings)
  */
 
-import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Heart, Star, Download, Play, X } from 'lucide-react';
-import { useUser } from '../context/UserContext';
-import { Movie, Cast, Crew, Video } from '../types/movie';
-import { formatRuntime, formatDate } from '../utils/formatters';
+import { useEffect, useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Heart, Star, Download, Play, X } from "lucide-react";
+import { useUser } from "../context/UserContext";
+import { Movie, Cast, Crew, Video } from "../types/movie";
+import { formatRuntime, formatDate } from "../utils/formatters";
+import DownloadButton from "./DownloadButton";
 
 // TMDB API configuration
 const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
-const BASE_URL = 'https://api.themoviedb.org/3';
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
+const BASE_URL = "https://api.themoviedb.org/3";
+const IMAGE_BASE_URL = "https://image.tmdb.org/t/p/original";
 
 export default function MovieDetail() {
   // Navigation and route parameters
@@ -55,30 +56,38 @@ export default function MovieDetail() {
       try {
         // Fetch movie details
         const movieResponse = await axios.get(`${BASE_URL}/movie/${id}`, {
-          params: { api_key: API_KEY, append_to_response: 'videos' }
+          params: { api_key: API_KEY, append_to_response: "videos" },
         });
         setMovie(movieResponse.data);
 
         // Find trailer video
         const videos = movieResponse.data.videos?.results || [];
-        const trailer = videos.find((video: Video) => 
-          video.type === 'Trailer' && video.site === 'YouTube'
+        const trailer = videos.find(
+          (video: Video) => video.type === "Trailer" && video.site === "YouTube"
         );
         setTrailerKey(trailer?.key || null);
 
         // Fetch movie credits
-        const creditsResponse = await axios.get(`${BASE_URL}/movie/${id}/credits`, {
-          params: { api_key: API_KEY }
-        });
+        const creditsResponse = await axios.get(
+          `${BASE_URL}/movie/${id}/credits`,
+          {
+            params: { api_key: API_KEY },
+          }
+        );
         setCast(creditsResponse.data.cast.slice(0, 10));
-        setCrew(creditsResponse.data.crew.filter((member: Crew) => 
-          ['Director', 'Producer', 'Screenplay'].includes(member.job)
-        ));
+        setCrew(
+          creditsResponse.data.crew.filter((member: Crew) =>
+            ["Director", "Producer", "Screenplay"].includes(member.job)
+          )
+        );
 
         // Fetch similar movies
-        const similarResponse = await axios.get(`${BASE_URL}/movie/${id}/similar`, {
-          params: { api_key: API_KEY }
-        });
+        const similarResponse = await axios.get(
+          `${BASE_URL}/movie/${id}/similar`,
+          {
+            params: { api_key: API_KEY },
+          }
+        );
         setSimilarMovies(similarResponse.data.results.slice(0, 6));
 
         // Check if movie is in user's favorites
@@ -86,8 +95,8 @@ export default function MovieDetail() {
           setIsFavorite(currentUser.favorites.includes(id));
         }
       } catch (err) {
-        console.error('Error fetching movie data:', err);
-        setError('Failed to load movie details. Please try again later.');
+        console.error("Error fetching movie data:", err);
+        setError("Failed to load movie details. Please try again later.");
       } finally {
         setIsLoading(false);
       }
@@ -102,21 +111,21 @@ export default function MovieDetail() {
    */
   const handleFavoriteClick = async () => {
     if (!currentUser) {
-      navigate('/login');
+      navigate("/login");
       return;
     }
 
     try {
       const favorites = currentUser.favorites || [];
       const updatedFavorites = isFavorite
-        ? favorites.filter(favId => favId !== id)
+        ? favorites.filter((favId) => favId !== id)
         : [...favorites, id!];
 
-      await updateUser(currentUser.id, { favorites: updatedFavorites });
+      await updateUser({ favorites: updatedFavorites });
       setIsFavorite(!isFavorite);
     } catch (err) {
-      console.error('Error updating favorites:', err);
-      setError('Failed to update favorites. Please try again.');
+      console.error("Error updating favorites:", err);
+      setError("Failed to update favorites. Please try again.");
     }
   };
 
@@ -126,8 +135,8 @@ export default function MovieDetail() {
    */
   const handleDownload = () => {
     if (!movie?.poster_path) return;
-    
-    const link = document.createElement('a');
+
+    const link = document.createElement("a");
     link.href = `${IMAGE_BASE_URL}${movie.poster_path}`;
     link.download = `${movie.title}_poster.jpg`;
     document.body.appendChild(link);
@@ -146,7 +155,7 @@ export default function MovieDetail() {
   if (error || !movie) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
-        <p className="text-red-500 text-xl">{error || 'Movie not found'}</p>
+        <p className="text-red-500 text-xl">{error || "Movie not found"}</p>
         <button
           onClick={() => navigate(-1)}
           className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700"
@@ -169,7 +178,7 @@ export default function MovieDetail() {
         >
           <div className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm" />
         </div>
-        
+
         {/* Movie Title and Actions */}
         <div className="absolute bottom-0 left-0 right-0 p-6">
           <div className="max-w-7xl mx-auto">
@@ -186,11 +195,13 @@ export default function MovieDetail() {
               <button
                 onClick={handleFavoriteClick}
                 className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm ${
-                  isFavorite ? 'bg-pink-600 hover:bg-pink-700' : 'bg-gray-600 hover:bg-gray-700'
+                  isFavorite
+                    ? "bg-pink-600 hover:bg-pink-700"
+                    : "bg-gray-600 hover:bg-gray-700"
                 }`}
               >
-                <Heart size={18} fill={isFavorite ? 'currentColor' : 'none'} />
-                {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+                <Heart size={18} fill={isFavorite ? "currentColor" : "none"} />
+                {isFavorite ? "Remove from Favorites" : "Add to Favorites"}
               </button>
               <button
                 onClick={handleDownload}
@@ -216,16 +227,20 @@ export default function MovieDetail() {
             />
             <div className="mt-3 space-y-1.5">
               <p>
-                <span className="text-gray-400">Release Date:</span>{' '}
+                <span className="text-gray-400">Release Date:</span>{" "}
                 {formatDate(movie.release_date)}
               </p>
               <p>
-                <span className="text-gray-400">Runtime:</span>{' '}
+                <span className="text-gray-400">Runtime:</span>{" "}
                 {formatRuntime(movie.runtime)}
               </p>
               <div className="flex items-center gap-2">
                 <span className="text-gray-400">Rating:</span>
-                <Star className="text-yellow-500" size={18} fill="currentColor" />
+                <Star
+                  className="text-yellow-500"
+                  size={18}
+                  fill="currentColor"
+                />
                 <span>{movie.vote_average.toFixed(1)}</span>
               </div>
             </div>
@@ -242,14 +257,15 @@ export default function MovieDetail() {
             <div>
               <h2 className="text-xl font-semibold mb-2">Cast</h2>
               <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                {cast.map(member => (
+                {cast.map((member) => (
                   <div key={member.id} className="text-center">
                     <img
                       src={`${IMAGE_BASE_URL}${member.profile_path}`}
                       alt={member.name}
                       className="w-full rounded-lg mb-1"
-                      onError={e => {
-                        (e.target as HTMLImageElement).src = '/placeholder-avatar.png';
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src =
+                          "/placeholder-avatar.png";
                       }}
                     />
                     <p className="font-medium text-sm">{member.name}</p>
@@ -263,8 +279,11 @@ export default function MovieDetail() {
             <div>
               <h2 className="text-xl font-semibold mb-2">Crew</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {crew.map(member => (
-                  <div key={`${member.id}-${member.job}`} className="p-3 bg-gray-800 rounded-lg">
+                {crew.map((member) => (
+                  <div
+                    key={`${member.id}-${member.job}`}
+                    className="p-3 bg-gray-800 rounded-lg"
+                  >
                     <p className="font-medium text-sm">{member.name}</p>
                     <p className="text-xs text-gray-400">{member.job}</p>
                   </div>
@@ -276,7 +295,7 @@ export default function MovieDetail() {
             <div>
               <h2 className="text-xl font-semibold mb-2">Similar Movies</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {similarMovies.map(movie => (
+                {similarMovies.map((movie) => (
                   <div
                     key={movie.id}
                     onClick={() => navigate(`/movie/${movie.id}`)}
@@ -292,6 +311,20 @@ export default function MovieDetail() {
                 ))}
               </div>
             </div>
+
+            <div className="mb-4">
+              <h2 className="text-xl font-semibold mb-2">Details</h2>
+              <p>Release Date: {formatDate(movie.release_date)}</p>
+              <p>Rating: {movie.vote_average}/10</p>
+              <p>Duration: {formatRuntime(movie.runtime)}</p>
+            </div>
+            {currentUser && (
+              <DownloadButton
+                url={`https://image.tmdb.org/t/p/original${movie.poster_path}`}
+                filename={`${movie.title}-poster.jpg`}
+                label="Download Poster"
+              />
+            )}
           </div>
         </div>
       </div>
@@ -319,4 +352,4 @@ export default function MovieDetail() {
       )}
     </div>
   );
-} 
+}
