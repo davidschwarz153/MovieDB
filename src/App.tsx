@@ -16,7 +16,6 @@ import Favorites from "./pages/favorites/Favorites";
 import UserDashboard from "./components/dashboard/UserDashboard";
 import Settings from "./pages/settings/Settings";
 import UserManagement from "./components/admin/UserManagement";
-import Nav from "./components/nav/Nav";
 
 function App() {
   return (
@@ -25,7 +24,6 @@ function App() {
         <BackgroundProvider>
           <Router>
             <MainProvider>
-              <Nav />
               <Routes>
                 <Route path="/" element={<Splash />} />
                 <Route path="/intro" element={<Intro />} />

@@ -119,7 +119,7 @@ export default function Trending() {
   };
 
   const renderListView = () => (
-    <div className="flex flex-col gap-2 sm:gap-4 mt-4">
+    <div className="flex flex-col gap-2 sm:gap-4 mt-0">
       {sortedMovies.map((movie: IMovie) => (
         <div
           key={movie.id}
@@ -155,21 +155,6 @@ export default function Trending() {
               {user && (
                 <button
                   onClick={(e) => toggleFavorite(e, movie)}
-<<<<<<< HEAD
-                  className="p-2 bg-black/60 rounded-full hover:bg-red-500/20 transition-all duration-300 backdrop-blur-sm transform hover:scale-110"
-                  title={
-                    favorites[movie.id]
-                      ? "Remove from favorites"
-                      : "Add to favorites"
-                  }
-                >
-                  <Heart
-                    size={24}
-                    className={`transition-all duration-300 ${
-                      favorites[movie.id]
-                        ? "fill-red-500 text-red-500"
-                        : "text-gray-400 hover:text-red-500"
-=======
                   className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
                 >
                   <img
@@ -179,7 +164,6 @@ export default function Trending() {
                       favorites[movie.id]
                         ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
                         : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
->>>>>>> 4779da570f8364ea7ae6d640342a8c90877c5433
                     }`}
                   />
                 </button>
@@ -192,7 +176,7 @@ export default function Trending() {
   );
 
   const renderGridView = () => (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 mt-4 sm:mt-8">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 mt-4 sm:mt-4">
       {sortedMovies.map((movie: IMovie) => (
         <div
           key={movie.id}
@@ -210,21 +194,6 @@ export default function Trending() {
               {user && (
                 <button
                   onClick={(e) => toggleFavorite(e, movie)}
-<<<<<<< HEAD
-                  className="p-2 bg-black/60 rounded-full hover:bg-red-500/20 transition-all duration-300 backdrop-blur-sm transform hover:scale-110"
-                  title={
-                    favorites[movie.id]
-                      ? "Remove from favorites"
-                      : "Add to favorites"
-                  }
-                >
-                  <Heart
-                    size={24}
-                    className={`transition-all duration-300 ${
-                      favorites[movie.id]
-                        ? "fill-red-500 text-red-500"
-                        : "text-gray-400 hover:text-red-500"
-=======
                   className="absolute top-2 right-2 relative transform hover:scale-110 transition-all duration-300 active:scale-95"
                 >
                   <img
@@ -234,7 +203,6 @@ export default function Trending() {
                       favorites[movie.id]
                         ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
                         : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
->>>>>>> 4779da570f8364ea7ae6d640342a8c90877c5433
                     }`}
                   />
                 </button>
@@ -440,21 +408,6 @@ export default function Trending() {
                         {user && (
                           <button
                             onClick={(e) => toggleFavorite(e, movie)}
-<<<<<<< HEAD
-                            className="p-2 bg-black/60 rounded-full hover:bg-red-500/20 transition-all duration-300 backdrop-blur-sm transform hover:scale-110"
-                            title={
-                              favorites[movie.id]
-                                ? "Remove from favorites"
-                                : "Add to favorites"
-                            }
-                          >
-                            <Heart
-                              size={24}
-                              className={`transition-all duration-300 ${
-                                favorites[movie.id]
-                                  ? "fill-red-500 text-red-500"
-                                  : "text-gray-400 hover:text-red-500"
-=======
                             className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
                           >
                             <img
@@ -464,7 +417,6 @@ export default function Trending() {
                                 favorites[movie.id]
                                   ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
                                   : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
->>>>>>> 4779da570f8364ea7ae6d640342a8c90877c5433
                               }`}
                             />
                           </button>
