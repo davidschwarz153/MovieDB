@@ -37,7 +37,7 @@ export default function MovieDetail() {
   };
 
   const toggleFavorite = () => {
-    if (!user) return;
+    if (!user || !selectedMovie) return;
 
     const userFavorites = JSON.parse(
       localStorage.getItem(`favorites_${user.id}`) || "[]"
@@ -48,12 +48,13 @@ export default function MovieDetail() {
       newFavorites = userFavorites.filter(
         (f: IMovie) => f.id !== selectedMovie.id
       );
+      setIsFavorite(false);
     } else {
       newFavorites = [...userFavorites, selectedMovie];
+      setIsFavorite(true);
     }
 
     localStorage.setItem(`favorites_${user.id}`, JSON.stringify(newFavorites));
-    setIsFavorite(!isFavorite);
   };
 
   return (
@@ -68,16 +69,20 @@ export default function MovieDetail() {
             <ArrowLeft className="text-white" size={24} />
           </button>
           {user && (
-            <img
-              src="/Vector.png"
-              alt="Favorites"
+            <button
               onClick={toggleFavorite}
-              className={`w-8 h-8 cursor-pointer transition-all duration-300 hover:scale-110 ${
-                isFavorite
-                  ? "brightness-200 filter-none"
-                  : "brightness-75 opacity-50"
-              }`}
-            />
+              className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
+            >
+              <img
+                src="/Vector.png"
+                alt="Favorites"
+                className={`w-8 h-8 cursor-pointer transition-all duration-300 ${
+                  isFavorite
+                    ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                    : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+                }`}
+              />
+            </button>
           )}
         </div>
 

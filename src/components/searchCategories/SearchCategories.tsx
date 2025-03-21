@@ -196,11 +196,11 @@ export default function SearchCategories() {
         setFilteredMovies([]);
       }
     }
-  };
+    };
 
-  const handleCategoryClick = (categoryId: number) => {
-    const newCategory = categoryId === selectedCategory ? null : categoryId;
-    setSelectedCategory(newCategory);
+    const handleCategoryClick = (categoryId: number) => {
+        const newCategory = categoryId === selectedCategory ? null : categoryId;
+        setSelectedCategory(newCategory);
 
     if (newCategory !== null) {
       filterMoviesByGenre(categoryId);
@@ -226,15 +226,15 @@ export default function SearchCategories() {
       setSortBy(newSortBy);
       setSortDirection("desc");
     }
-  };
+    };
 
-  return (
+    return (
     <div className="flex flex-col gap-4 p-2 sm:p-4 mb-4 bg-gradient-to-b from-gray-900/10 to-transparent">
       <div className="relative w-full">
-        <input
-          type="text"
-          placeholder="Search Movie ..."
-          value={searchTerm}
+                <input
+                    type="text"
+                    placeholder="Search Movie ..."
+                    value={searchTerm}
           onChange={handleSearchChange}
           className="w-full p-2 sm:p-3 pl-3 sm:pl-4 pr-8 sm:pr-10 text-sm sm:text-base text-gray-900 bg-gray-100 rounded-xl shadow-lg focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all"
         />
@@ -252,7 +252,7 @@ export default function SearchCategories() {
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
-      </div>
+            </div>
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
         <div className="relative w-full overflow-hidden">
@@ -261,9 +261,9 @@ export default function SearchCategories() {
               {categories.map((category) => {
                 const Icon = category.icon;
                 return (
-                  <button
-                    key={category.id}
-                    onClick={() => handleCategoryClick(category.id)}
+                    <button
+                        key={category.id}
+                        onClick={() => handleCategoryClick(category.id)}
                     className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap ${
                       selectedCategory === category.id
                         ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
@@ -283,7 +283,7 @@ export default function SearchCategories() {
                     key={`duplicate-${category.id}`}
                     onClick={() => handleCategoryClick(category.id)}
                     className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap ${
-                      selectedCategory === category.id
+                            selectedCategory === category.id
                         ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
                         : "bg-gray-900/30 text-gray-200 hover:text-white hover:bg-gray-900/50"
                     }`}
@@ -506,11 +506,11 @@ export default function SearchCategories() {
                     </div>
                   </div>
                 </div>
-              ))}
+                ))}
             </div>
           )}
         </>
       )}
-    </div>
-  );
+        </div>
+    );
 }
