@@ -1,135 +1,89 @@
-# MovieDB - React Movie Application
+# 🎬 MovieDB
 
-A modern, responsive movie database application built with React, TypeScript, and Tailwind CSS. This application allows users to browse trending movies, search for specific titles, manage favorites, and download movie posters.
+Willkommen bei **MovieDB**! 🍿  
+Eine moderne und intuitive Movie-Datenbank-App, die mit **React** und der **TMDb-API** entwickelt wurde. Entdecke Filme, suche nach deinen Favoriten und genieße detaillierte Informationen zu jedem Film – alles in einem schönen, responsiven Design!
 
-## 🌟 Features
+---
 
-- **User Authentication**
-  - Sign up and login functionality
-  - Admin dashboard access
-  - Secure user session management
+## 🔍 Vorschau
 
-- **Movie Management**
-  - Browse trending movies
-  - Search movies by title
-  - View detailed movie information
-  - Watch movie trailers
-  - Download movie posters
+- **Splash Screen**: Animierter Startbildschirm mit Logo
+- **Intro Page**: Übersichtliche Einführung in die App
+- **Home**: Trendige Filme und Suchfunktion
+- **Detailansicht**: Umfangreiche Informationen zu jedem Film
+- **Trailer-Integration**: Direkter Zugriff auf Film-Trailer
+- **Kategoriefilter**: Filme nach Genres filtern
 
-- **User Experience**
-  - Dynamic background images
-  - Responsive design
-  - Loading states and error handling
-  - Success/error notifications
+---
 
-## 🚀 Getting Started
+## ⚙️ Features
 
-### Prerequisites
+✨ Modernes UI mit Tailwind CSS  
+🔍 Echtzeit-Suche in der TMDb-Datenbank  
+🎯 Kategoriefilterung nach Genres:
 
-- Node.js (v14 or higher)
-- npm or yarn
-- TMDB API key
+- Action
+- Comedy
+- Horror
+  🎥 Detaillierte Filminformationen:
+- Filmtitel und Beschreibung
+- Bewertungen und Erscheinungsdatum
+- Genres und Sprachen
+- Laufzeit und Trailer
+  🌟 Trending Movies Sektion  
+  📱 Vollständig responsive Design
+  🔒 TypeScript für bessere Code-Qualität
 
-### Installation
+---
 
-1. Clone the repository:
+## 🚀 Installation
+
 ```bash
-git clone [your-repository-url]
-cd MovieDB
-```
-
-2. Install dependencies:
-```bash
+git clone https://github.com/davidschwarz153/moviedb.git
+cd moviedb
 npm install
-# or
-yarn install
-```
-
-3. Create a `.env` file in the root directory and add your TMDB API key:
-```env
-VITE_TMDB_API_KEY=your_tmdb_api_key_here
-```
-
-4. Start the development server:
-```bash
 npm run dev
-# or
-yarn dev
 ```
 
-## 🛠️ Built With
+🔗 Die App läuft unter: [http://localhost:5173](http://localhost:5173)
 
-- React
-- TypeScript
-- Tailwind CSS
-- Vite
-- TMDB API
-- Lucide React (for icons)
+---
 
-## 📁 Project Structure
+## 📦 Technologien
 
-```
-src/
-├── components/
-│   ├── auth/
-│   ├── movie/
-│   ├── movieDetail/
-│   └── nav/
-├── context/
-│   ├── UserContext.tsx
-│   ├── MainProvider.tsx
-│   └── BackgroundContext.tsx
-├── types/
-└── App.tsx
-```
+[![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)](https://axios-http.com/)
+[![React Router](https://img.shields.io/badge/React_Router-CA4245?style=for-the-badge&logo=react-router&logoColor=white)](https://reactrouter.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)](https://www.framer.com/motion/) 
 
-## 👥 User Roles
+🎬 TMDb API für Filmdaten  
+📱 Responsive Design
 
-- **Regular Users**
-  - Browse movies
-  - Add/remove favorites
-  - Download posters
-  - Watch trailers
+---
 
-- **Admin**
-  - All regular user features
-  - Access to admin dashboard
-  - User management
+## 🔑 API-Konfiguration
 
-## 🔐 Default Admin Credentials
+Die App verwendet die TMDb API. Um die App zu nutzen, benötigst du einen API-Key von TMDb:
 
-```
-Email: admin@moviedb.com
-Password: admin123
+1. Registriere dich auf [TMDb](https://www.themoviedb.org/)
+2. Erstelle einen API-Key
+3. Füge den API-Key in die `.env` Datei ein:
+
+```env
+VITE_TMDB_API_KEY=dein_api_key
 ```
 
-## 🎨 Features
+---
 
-### Authentication
-- Secure login/signup system
-- Form validation
-- Error handling
-- Success notifications
+## 🤝 Mitmachen
 
-### Movie Features
-- Dynamic movie backgrounds
-- Trailer viewing
-- Poster downloads
-- Favorite management
+Hast du Ideen für neue Features oder Verbesserungen?  
+**Pull Requests und Issues sind jederzeit willkommen!**
 
-### UI/UX
-- Responsive design
-- Loading states
-- Error notifications
-- Clean, modern interface
+---
 
-## 📝 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🙏 Acknowledgments
-
-- TMDB API for movie data
-- Tailwind CSS for styling
-- React community for inspiration
+## 💡 Viel Spaß beim Entdecken der Filme!
 
