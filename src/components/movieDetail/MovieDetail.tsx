@@ -4,6 +4,7 @@ import { IMovie, Genre, Language } from "../interfaces/Interface";
 import { ArrowLeft, Star, Play, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import DownloadButton from "../DownloadButton";
 
 export default function MovieDetail() {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ export default function MovieDetail() {
 
   return (
     <>
-      <div className="relative min-h-screen bg-gradient-to-b from-purple-900/5 to-transparent">
+      <div className="relative min-h-screen bg-gray-950">
         {/* Back Button and Favorite Button */}
         <div className="absolute top-4 left-4 right-4 z-10 flex justify-between">
           <button
@@ -89,7 +90,7 @@ export default function MovieDetail() {
             alt={selectedMovie.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-500/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-950/40 via-gray-950/60 to-gray-950" />
         </div>
 
         {/* Movie Details */}
@@ -156,14 +157,24 @@ export default function MovieDetail() {
 
           {/* Watch Trailer Button */}
           {movieTrailer && (
-            <button
-              className="w-full mt-8 bg-red-600 text-white py-3 rounded-lg font-semibold flex items-center justify-center gap-2 hover:bg-red-700 transition-colors shadow-lg hover:shadow-red-500/50"
-              onClick={() => setShowTrailer(true)}
-            >
-              <Play size={20} />
-              Watch Trailer
-            </button>
+            <div className="mt-8">
+              <button
+                className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-purple-600 text-white rounded-lg transition-colors duration-300 shadow-lg hover:bg-purple-700 hover:shadow-purple-500/50"
+                onClick={() => setShowTrailer(true)}
+              >
+                <Play size={20} />
+                Watch Trailer
+              </button>
+            </div>
           )}
+
+          {/* Download Movie Poster Button */}
+          <DownloadButton
+            url={`https://image.tmdb.org/t/p/w780${selectedMovie.poster_path}?crossorigin=anonymous`}
+            filename={`${selectedMovie.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-poster.jpg`}
+            label="Download Movie Poster"
+            className="w-full mt-4"
+          />
         </div>
       </div>
 
