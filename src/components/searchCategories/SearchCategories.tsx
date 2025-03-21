@@ -106,29 +106,6 @@ export default function SearchCategories() {
   const [sortDirection, setSortDirection] = useState<"asc" | "desc">("desc");
   const [sortedMovies, setSortedMovies] = useState<IMovie[]>([]);
   const [viewMode, setViewMode] = useState<"list" | "grid">("grid");
-  const [scrollPosition, setScrollPosition] = useState(0);
-
-  // Automatische Scroll-Animation für Kategorien
-  useEffect(() => {
-    const scrollInterval = setInterval(() => {
-      setScrollPosition((prev) => {
-        const container = document.querySelector('.categories-container');
-        if (!container) return 0;
-        const maxScroll = container.scrollWidth - container.clientWidth;
-        return prev >= maxScroll ? 0 : prev + 1;
-      });
-    }, 30); // Geschwindigkeit der Animation
-
-    return () => clearInterval(scrollInterval);
-  }, []);
-
-  // Aktualisiere die Scroll-Position
-  useEffect(() => {
-    const container = document.querySelector('.categories-container');
-    if (container) {
-      container.scrollLeft = scrollPosition;
-    }
-  }, [scrollPosition]);
 
   // Эффект для сброса поиска при изменении isSearching
   useEffect(() => {
@@ -279,42 +256,44 @@ export default function SearchCategories() {
 
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 sm:gap-4">
         <div className="relative w-full overflow-hidden">
-          <div className="categories-container flex gap-1.5 sm:gap-2 px-2 sm:px-4 md:px-0 min-w-max mx-auto max-w-[95vw] md:max-w-[80vw] lg:max-w-[1000px] transition-all duration-300">
-            {categories.map((category) => {
-              const Icon = category.icon;
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => handleCategoryClick(category.id)}
-                  className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap ${
-                    selectedCategory === category.id
-                      ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
-                      : "bg-gray-900/30 text-gray-200 hover:text-white hover:bg-gray-900/50"
-                  }`}
-                >
-                  <Icon size={14} />
-                  <span>{category.name}</span>
-                </button>
-              );
-            })}
-            {/* Dupliziere Kategorien für nahtlose Animation */}
-            {categories.map((category) => {
-              const Icon = category.icon;
-              return (
-                <button
-                  key={`duplicate-${category.id}`}
-                  onClick={() => handleCategoryClick(category.id)}
-                  className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap ${
-                    selectedCategory === category.id
-                      ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
-                      : "bg-gray-900/30 text-gray-200 hover:text-white hover:bg-gray-900/50"
-                  }`}
-                >
-                  <Icon size={14} />
-                  <span>{category.name}</span>
-                </button>
-              );
-            })}
+          <div className="categories-wrapper flex gap-1.5 sm:gap-2 px-2 sm:px-4 md:px-0 min-w-max mx-auto max-w-[95vw] md:max-w-[80vw] lg:max-w-[1000px]">
+            <div className="categories-container flex gap-1.5 sm:gap-2 animate-scroll">
+              {categories.map((category) => {
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => handleCategoryClick(category.id)}
+                    className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap ${
+                      selectedCategory === category.id
+                        ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
+                        : "bg-gray-900/30 text-gray-200 hover:text-white hover:bg-gray-900/50"
+                    }`}
+                  >
+                    <Icon size={14} />
+                    <span>{category.name}</span>
+                  </button>
+                );
+              })}
+              {/* Dupliziere Kategorien für nahtlose Animation */}
+              {categories.map((category) => {
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={`duplicate-${category.id}`}
+                    onClick={() => handleCategoryClick(category.id)}
+                    className={`px-2 sm:px-3 py-1 sm:py-1.5 rounded-full transition-all duration-300 flex items-center gap-1 text-xs sm:text-sm whitespace-nowrap ${
+                      selectedCategory === category.id
+                        ? `bg-gradient-to-r ${category.color} text-white shadow-lg`
+                        : "bg-gray-900/30 text-gray-200 hover:text-white hover:bg-gray-900/50"
+                    }`}
+                  >
+                    <Icon size={14} />
+                    <span>{category.name}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
