@@ -48,14 +48,20 @@ export default function MovieDetail() {
       newFavorites = userFavorites.filter(
         (f: IMovie) => f.id !== selectedMovie.id
       );
+<<<<<<< HEAD
       console.log("Removing from favorites:", selectedMovie.title);
     } else {
       newFavorites = [...userFavorites, selectedMovie];
       console.log("Adding to favorites:", selectedMovie.title);
+=======
+      setIsFavorite(false);
+    } else {
+      newFavorites = [...userFavorites, selectedMovie];
+      setIsFavorite(true);
+>>>>>>> 4779da570f8364ea7ae6d640342a8c90877c5433
     }
 
     localStorage.setItem(`favorites_${user.id}`, JSON.stringify(newFavorites));
-    setIsFavorite(!isFavorite);
   };
 
   return (
@@ -79,7 +85,104 @@ export default function MovieDetail() {
             <ArrowLeft className="text-white" size={24} />
           </button>
           {user && (
+<<<<<<< HEAD
             <div className="absolute top-2 right-2 z-[9999]">
+=======
+            <button
+              onClick={toggleFavorite}
+              className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
+            >
+              <img
+                src="/Vector.png"
+                alt="Favorites"
+                className={`w-8 h-8 cursor-pointer transition-all duration-300 ${
+                  isFavorite
+                    ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                    : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+                }`}
+              />
+            </button>
+          )}
+        </div>
+
+        {/* Movie Poster */}
+        <div className="relative h-[45vh]">
+          <img
+            src={`https://image.tmdb.org/t/p/original${
+              selectedMovie.backdrop_path || selectedMovie.poster_path
+            }`}
+            alt={selectedMovie.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-gray-950/40 via-gray-950/60 to-gray-950" />
+        </div>
+
+        {/* Movie Details */}
+        <div className="px-4 py-6 pb-32">
+          <h1 className="text-2xl font-bold text-white">
+            {selectedMovie.title}
+          </h1>
+
+          {/* Rating and Release Date */}
+          <div className="flex items-center gap-4 mb-4 text-white">
+            <div className="flex items-center">
+              <Star className="text-yellow-500" size={20} />
+              <span className="ml-1">
+                {selectedMovie.vote_average.toFixed(1)} / 10
+              </span>
+            </div>
+            <span>•</span>
+            <span>{formatDate(selectedMovie.release_date)}</span>
+            <span>•</span>
+            <span>
+              {selectedMovie.runtime
+                ? `${Math.floor(selectedMovie.runtime / 60)}h ${
+                    selectedMovie.runtime % 60
+                  }m`
+                : "N/A"}
+            </span>
+          </div>
+
+          {/* Overview */}
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-white mb-2">Overview</h2>
+            <p className="text-gray-200">{selectedMovie.overview}</p>
+          </div>
+
+          {/* Genres */}
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-white mb-2">Genres</h2>
+            <div className="flex flex-wrap gap-2">
+              {selectedMovie.genres?.map((genre: Genre) => (
+                <span
+                  key={genre.id}
+                  className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full text-sm hover:bg-white/20 transition-colors"
+                >
+                  {genre.name}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Languages */}
+          <div>
+            <h2 className="text-xl font-bold text-white mb-2">Languages</h2>
+            <div className="flex flex-wrap gap-2">
+              {selectedMovie.spoken_languages?.map((language: Language) => (
+                <span
+                  key={language.iso_639_1}
+                  className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full text-sm hover:bg-white/20 transition-colors"
+                >
+                  {language.english_name}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Watch Trailer Button */}
+          {movieTrailer && (
+            <div className="mt-8">
+>>>>>>> 4779da570f8364ea7ae6d640342a8c90877c5433
               <button
                 onClick={toggleFavorite}
                 className="bg-black/60 p-2 rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm"

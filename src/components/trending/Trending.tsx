@@ -155,6 +155,7 @@ export default function Trending() {
               {user && (
                 <button
                   onClick={(e) => toggleFavorite(e, movie)}
+<<<<<<< HEAD
                   className="p-2 bg-black/60 rounded-full hover:bg-red-500/20 transition-all duration-300 backdrop-blur-sm transform hover:scale-110"
                   title={
                     favorites[movie.id]
@@ -168,6 +169,17 @@ export default function Trending() {
                       favorites[movie.id]
                         ? "fill-red-500 text-red-500"
                         : "text-gray-400 hover:text-red-500"
+=======
+                  className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
+                >
+                  <img
+                    src="/Vector.png"
+                    alt="Favorites"
+                    className={`w-5 h-5 sm:w-6 sm:h-6 cursor-pointer transition-all duration-300 ${
+                      favorites[movie.id]
+                        ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                        : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+>>>>>>> 4779da570f8364ea7ae6d640342a8c90877c5433
                     }`}
                   />
                 </button>
@@ -198,6 +210,7 @@ export default function Trending() {
               {user && (
                 <button
                   onClick={(e) => toggleFavorite(e, movie)}
+<<<<<<< HEAD
                   className="p-2 bg-black/60 rounded-full hover:bg-red-500/20 transition-all duration-300 backdrop-blur-sm transform hover:scale-110"
                   title={
                     favorites[movie.id]
@@ -211,6 +224,17 @@ export default function Trending() {
                       favorites[movie.id]
                         ? "fill-red-500 text-red-500"
                         : "text-gray-400 hover:text-red-500"
+=======
+                  className="absolute top-2 right-2 relative transform hover:scale-110 transition-all duration-300 active:scale-95"
+                >
+                  <img
+                    src="/Vector.png"
+                    alt="Favorites"
+                    className={`w-7 h-7 cursor-pointer transition-all duration-300 ${
+                      favorites[movie.id]
+                        ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                        : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+>>>>>>> 4779da570f8364ea7ae6d640342a8c90877c5433
                     }`}
                   />
                 </button>
@@ -416,6 +440,7 @@ export default function Trending() {
                         {user && (
                           <button
                             onClick={(e) => toggleFavorite(e, movie)}
+<<<<<<< HEAD
                             className="p-2 bg-black/60 rounded-full hover:bg-red-500/20 transition-all duration-300 backdrop-blur-sm transform hover:scale-110"
                             title={
                               favorites[movie.id]
@@ -429,6 +454,17 @@ export default function Trending() {
                                 favorites[movie.id]
                                   ? "fill-red-500 text-red-500"
                                   : "text-gray-400 hover:text-red-500"
+=======
+                            className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
+                          >
+                            <img
+                              src="/Vector.png"
+                              alt="Favorites"
+                              className={`w-5 h-5 sm:w-6 sm:h-6 cursor-pointer transition-all duration-300 ${
+                                favorites[movie.id]
+                                  ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
+                                  : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+>>>>>>> 4779da570f8364ea7ae6d640342a8c90877c5433
                               }`}
                             />
                           </button>
