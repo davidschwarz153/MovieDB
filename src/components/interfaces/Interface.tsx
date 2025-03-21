@@ -8,6 +8,12 @@ export interface Language {
     english_name: string;
 }
 
+export interface Video {
+    key: string;
+    site: string;
+    type: string;
+}
+
 export interface IMovie {
     id: number;
     title: string;
@@ -20,6 +26,9 @@ export interface IMovie {
     runtime?: number;
     genres?: Genre[];
     spoken_languages?: Language[];
+    videos?: {
+        results: Video[];
+    };
 } 
 
 

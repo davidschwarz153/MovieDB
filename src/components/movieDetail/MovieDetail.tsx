@@ -1,40 +1,33 @@
-import { useContext, useState, useEffect } from "react";
-import { mainContext } from "../../context/MainProvider";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { IMovie, Genre, Language } from "../interfaces/Interface";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import DownloadButton from "../DownloadButton";
-import { ArrowLeft, Star, Play } from "lucide-react";
+import { mainContext } from "../../context/MainProvider";
+import { useContext } from "react";
+import { Heart, Play, X, Star } from "lucide-react";
 
 export default function MovieDetail() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
-  const { selectedMovie, movieTrailer } = useContext(mainContext) as {
-    selectedMovie: IMovie;
-    movieTrailer: string | null;
-  };
+  const { selectedMovie, fetchMovieDetails } = useContext(mainContext);
   const [showTrailer, setShowTrailer] = useState(false);
   const [isFavorite, setIsFavorite] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      fetchMovieDetails(parseInt(id));
+    }
+  }, [id]);
 
   useEffect(() => {
     if (user && selectedMovie) {
       const userFavorites = JSON.parse(
         localStorage.getItem(`favorites_${user.id}`) || "[]"
       );
-      setIsFavorite(
-        userFavorites.some((f: IMovie) => f.id === selectedMovie.id)
-      );
+      setIsFavorite(userFavorites.some((movie: IMovie) => movie.id === selectedMovie.id));
     }
   }, [user, selectedMovie]);
-
-  if (!selectedMovie) {
-    return null;
-  }
-
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toISOString().split("T")[0];
-  };
 
   const toggleFavorite = () => {
     if (!user || !selectedMovie) return;
@@ -46,160 +39,130 @@ export default function MovieDetail() {
     let newFavorites;
     if (isFavorite) {
       newFavorites = userFavorites.filter(
-        (f: IMovie) => f.id !== selectedMovie.id
+        (movie: IMovie) => movie.id !== selectedMovie.id
       );
-      setIsFavorite(false);
     } else {
       newFavorites = [...userFavorites, selectedMovie];
-      setIsFavorite(true);
     }
 
     localStorage.setItem(`favorites_${user.id}`, JSON.stringify(newFavorites));
+    setIsFavorite(!isFavorite);
   };
 
+  if (!selectedMovie) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-white text-xl">Loading...</div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900/90 to-gray-800/90">
-      <div className="relative min-h-screen">
-        <div className="absolute inset-0">
-          <img
-            src={`https://image.tmdb.org/t/p/original${selectedMovie.backdrop_path}`}
-            alt={selectedMovie.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-900/90 to-gray-900"></div>
-        </div>
+    <div className="min-h-screen bg-black relative">
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(https://image.tmdb.org/t/p/original${selectedMovie.backdrop_path})`,
+          zIndex: 0,
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black"></div>
+      </div>
 
-        {/* Back Button and Favorite Button */}
-        <div className="absolute top-4 left-4 right-4 z-10 flex justify-between">
-          <button
-            onClick={() => navigate(-1)}
-            className="bg-black/60 p-2 rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm"
-          >
-            <ArrowLeft className="text-white" size={24} />
-          </button>
-          {user && (
-            <button
-              onClick={toggleFavorite}
-              className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
-            >
+      <div className="relative z-10">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex flex-col md:flex-row gap-8">
+            <div className="w-full md:w-1/3">
               <img
-                src="/Vector.png"
-                alt="Favorites"
-                className={`w-8 h-8 cursor-pointer transition-all duration-300 ${
-                  isFavorite
-                    ? "brightness-200 filter-none drop-shadow-[0_0_8px_rgba(34,197,94,0.5)] hover:brightness-[3] hover:drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]"
-                    : "brightness-75 opacity-50 hover:brightness-200 hover:drop-shadow-[0_0_8px_rgba(34,197,94,0.5)]"
-                }`}
+                src={`https://image.tmdb.org/t/p/w500${selectedMovie.poster_path}`}
+                alt={selectedMovie.title}
+                className="w-full rounded-lg shadow-lg"
               />
-            </button>
-          )}
-        </div>
-
-        {/* Movie Poster */}
-        <div className="relative h-[45vh]">
-          <img
-            src={`https://image.tmdb.org/t/p/original${
-              selectedMovie.backdrop_path || selectedMovie.poster_path
-            }`}
-            alt={selectedMovie.title}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-gray-950/40 via-gray-950/60 to-gray-950" />
-        </div>
-
-        {/* Movie Details */}
-        <div className="px-4 py-6 pb-32">
-          <h1 className="text-2xl font-bold text-white">
-            {selectedMovie.title}
-          </h1>
-
-          {/* Rating and Release Date */}
-          <div className="flex items-center gap-4 mb-4 text-white">
-            <div className="flex items-center">
-              <Star className="text-yellow-500" size={20} />
-              <span className="ml-1">
-                {selectedMovie.vote_average.toFixed(1)} / 10
-              </span>
             </div>
-            <span>•</span>
-            <span>{formatDate(selectedMovie.release_date)}</span>
-            <span>•</span>
-            <span>
-              {selectedMovie.runtime
-                ? `${Math.floor(selectedMovie.runtime / 60)}h ${
-                    selectedMovie.runtime % 60
-                  }m`
-                : "N/A"}
-            </span>
-          </div>
-
-          {/* Overview */}
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-white mb-2">Overview</h2>
-            <p className="text-gray-200">{selectedMovie.overview}</p>
-          </div>
-
-          {/* Genres */}
-          <div className="mb-6">
-            <h2 className="text-xl font-bold text-white mb-2">Genres</h2>
-            <div className="flex flex-wrap gap-2">
-              {selectedMovie.genres?.map((genre: Genre) => (
-                <span
-                  key={genre.id}
-                  className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full text-sm hover:bg-white/20 transition-colors"
-                >
-                  {genre.name}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          {/* Languages */}
-          <div>
-            <h2 className="text-xl font-bold text-white mb-2">Languages</h2>
-            <div className="flex flex-wrap gap-2">
-              {selectedMovie.spoken_languages?.map((language: Language) => (
-                <span
-                  key={language.iso_639_1}
-                  className="px-3 py-1 bg-white/10 backdrop-blur-sm text-white rounded-full text-sm hover:bg-white/20 transition-colors"
-                >
-                  {language.english_name}
-                </span>
-              ))}
+            <div className="w-full md:w-2/3 text-white">
+              <div className="flex justify-between items-start mb-4">
+                <h1 className="text-4xl font-bold">{selectedMovie.title}</h1>
+                <div className="flex gap-2">
+                  <button
+                    onClick={toggleFavorite}
+                    className="p-2 bg-black/60 rounded-full hover:bg-red-500/20 transition-colors backdrop-blur-sm"
+                    title={isFavorite ? "Remove from favorites" : "Add to favorites"}
+                  >
+                    <Heart
+                      size={24}
+                      className={`transition-colors ${
+                        isFavorite
+                          ? "fill-red-500 text-red-500"
+                          : "text-gray-400 hover:text-red-500"
+                      }`}
+                    />
+                  </button>
+                  <button
+                    onClick={() => setShowTrailer(true)}
+                    className="p-2 bg-black/60 rounded-full hover:bg-purple-500/20 transition-colors backdrop-blur-sm"
+                    title="Play trailer"
+                  >
+                    <Play size={24} className="text-gray-400 hover:text-purple-500" />
+                  </button>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 mb-6">
+                <div className="flex items-center text-yellow-500">
+                  <Star size={20} />
+                  <span className="ml-1">{selectedMovie.vote_average.toFixed(1)} / 10</span>
+                </div>
+                <span>{new Date(selectedMovie.release_date).getFullYear()}</span>
+              </div>
+              <p className="text-lg mb-8">{selectedMovie.overview}</p>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Genres</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedMovie.genres?.map((genre) => (
+                      <span
+                        key={genre.id}
+                        className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm"
+                      >
+                        {genre.name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold mb-2">Languages</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {selectedMovie.spoken_languages?.map((lang) => (
+                      <span
+                        key={lang.iso_639_1}
+                        className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm"
+                      >
+                        {lang.english_name}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-
-          {/* Watch Trailer Button */}
-          {movieTrailer && (
-            <div className="mt-8">
-              <button
-                onClick={() => setShowTrailer(true)}
-                className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-full transition-colors"
-              >
-                <Play size={24} />
-                <span>Watch Trailer</span>
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
-      {/* Trailer Modal */}
-      {showTrailer && movieTrailer && (
+      {showTrailer && (
         <div className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center">
-          <div className="relative w-full max-w-4xl aspect-video">
+          <div className="relative w-full max-w-4xl mx-4">
+            <button
+              onClick={() => setShowTrailer(false)}
+              className="absolute -top-12 right-0 text-white hover:text-gray-300"
+            >
+              <X size={32} />
+            </button>
             <iframe
-              src={`https://www.youtube.com/embed/${movieTrailer}`}
-              className="w-full h-full"
+              src={`https://www.youtube.com/embed/${selectedMovie.videos?.results[0]?.key}`}
+              title="Movie Trailer"
+              className="w-full aspect-video rounded-lg"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
               allowFullScreen
             ></iframe>
-            <button
-              onClick={() => setShowTrailer(false)}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
-            >
-              Close
-            </button>
           </div>
         </div>
       )}

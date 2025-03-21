@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { IMovie } from "../interfaces/Interface";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { mainContext } from "../../context/MainProvider";
+import { useContext } from "react";
 import {
   Star,
   LayoutGrid,
@@ -14,6 +16,7 @@ import {
 export default function Favorites() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { fetchMovieDetails } = useContext(mainContext);
   const [viewMode, setViewMode] = useState<"list" | "grid">("list");
   const [favorites, setFavorites] = useState<{ [key: number]: boolean }>({});
   const [sortBy, setSortBy] = useState<"rating" | "name" | "date">("rating");
@@ -63,7 +66,8 @@ export default function Favorites() {
     sortMovies();
   }, [sortBy, sortDirection]);
 
-  const handleMovieClick = (movieId: number) => {
+  const handleMovieClick = async (movieId: number) => {
+    await fetchMovieDetails(movieId);
     navigate(`/movie/${movieId}`);
   };
 

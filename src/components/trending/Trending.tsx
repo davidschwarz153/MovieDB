@@ -155,7 +155,7 @@ export default function Trending() {
               {user && (
                 <button
                   onClick={(e) => toggleFavorite(e, movie)}
-                  className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
+                  className="bg-black/60 p-2 rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm relative transform hover:scale-110 transition-all duration-300 active:scale-95"
                 >
                   <img
                     src="/Vector.png"
@@ -194,7 +194,7 @@ export default function Trending() {
               {user && (
                 <button
                   onClick={(e) => toggleFavorite(e, movie)}
-                  className="absolute top-2 right-2 relative transform hover:scale-110 transition-all duration-300 active:scale-95"
+                  className="bg-black/60 p-2 rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm relative transform hover:scale-110 transition-all duration-300 active:scale-95"
                 >
                   <img
                     src="/Vector.png"
@@ -408,7 +408,7 @@ export default function Trending() {
                         {user && (
                           <button
                             onClick={(e) => toggleFavorite(e, movie)}
-                            className="relative transform hover:scale-110 transition-all duration-300 active:scale-95"
+                            className="bg-black/60 p-2 rounded-full hover:bg-black/80 transition-colors backdrop-blur-sm relative transform hover:scale-110 transition-all duration-300 active:scale-95"
                           >
                             <img
                               src="/Vector.png"
