@@ -16,7 +16,7 @@ export default function Nav() {
           to="/Home" 
           className="relative cursor-pointer transform hover:scale-110 transition-transform duration-300 active:scale-95"
         >
-          <img src="/Home.png" alt="Home" className="w-5 h-5 md:w-6 md:h-6 brightness-200" />
+          <img src="/Home.png" alt="Home" className="w-20 h-20 md:w-20 md:h-10 brightness-200 object-contain" />
         </Link>
 
         <Link
