@@ -1,3 +1,5 @@
+// Favorites
+
 import { useState, useEffect } from "react";
 import { IMovie } from "../interfaces/Interface";
 import { useNavigate } from "react-router-dom";
