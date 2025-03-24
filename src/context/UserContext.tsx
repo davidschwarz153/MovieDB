@@ -8,7 +8,6 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { User, UserSignUpData } from "../types/user";
-import { v4 as uuidv4 } from "uuid";
 
 /**
  * UserContextType Interface
@@ -48,14 +47,25 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
    * Restores user session and data persistence
    */
   useEffect(() => {
-    const savedUsers = localStorage.getItem("users");
-    if (savedUsers) {
-      setUsers(JSON.parse(savedUsers));
-    }
+    try {
+      // Загружаем список всех пользователей
+      const savedUsers = localStorage.getItem("users");
+      if (savedUsers) {
+        const parsedUsers = JSON.parse(savedUsers);
+        setUsers(parsedUsers);
+      }
 
-    const savedUser = localStorage.getItem("currentUser");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+      // Загружаем текущего пользователя
+      const savedUser = localStorage.getItem("currentUser");
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        setUser(parsedUser);
+        setIsAdmin(parsedUser.role === "admin");
+      }
+    } catch (error) {
+      console.error("Error loading user data from localStorage:", error);
+      localStorage.removeItem("users");
+      localStorage.removeItem("currentUser");
     }
   }, []);
 
@@ -63,16 +73,47 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
    * Persist users data to localStorage when it changes
    */
   useEffect(() => {
-    localStorage.setItem("users", JSON.stringify(users));
+    try {
+      // Сохраняем список пользователей
+      localStorage.setItem("users", JSON.stringify(users));
+
+      // Сохраняем персональные данные каждого пользователя
+      users.forEach((user) => {
+        const userKey = `user_${user.id}`;
+        const userData = {
+          favorites: user.favorites || [],
+          avatar: user.avatar,
+          settings: user.settings || {},
+        };
+        localStorage.setItem(userKey, JSON.stringify(userData));
+      });
+    } catch (error) {
+      console.error("Error saving users to localStorage:", error);
+    }
   }, [users]);
 
   /**
    * Persist current user to localStorage when it changes
    */
   useEffect(() => {
-    if (user) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-    } else {
+    try {
+      if (user) {
+        // Сохраняем основные данные текущего пользователя
+        localStorage.setItem("currentUser", JSON.stringify(user));
+
+        // Сохраняем персональные данные текущего пользователя
+        const userKey = `user_${user.id}`;
+        const userData = {
+          favorites: user.favorites || [],
+          avatar: user.avatar,
+          settings: user.settings || {},
+        };
+        localStorage.setItem(userKey, JSON.stringify(userData));
+      } else {
+        localStorage.removeItem("currentUser");
+      }
+    } catch (error) {
+      console.error("Error saving current user to localStorage:", error);
       localStorage.removeItem("currentUser");
     }
   }, [user]);
@@ -83,17 +124,37 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
    * @returns Promise<void> - No return value
    */
   const createUser = async (data: UserSignUpData) => {
-    const newUser: User = {
-      id: Math.random().toString(36).substr(2, 9),
-      name: data.name,
-      email: data.email,
-      role: data.role || "user",
-      status: data.status || "active",
-      favorites: [],
-    };
+    try {
+      const newUser: User = {
+        id: Math.random().toString(36).substr(2, 9),
+        name: data.name,
+        email: data.email,
+        role: data.role || "user",
+        status: data.status || "active",
+        favorites: [],
+        avatar: data.avatar,
+        settings: {},
+      };
 
-    setUsers((prevUsers) => [...prevUsers, newUser]);
-    return;
+      setUsers((prevUsers) => [...prevUsers, newUser]);
+
+      // Сохраняем нового пользователя и его персональные данные
+      try {
+        localStorage.setItem("users", JSON.stringify([...users, newUser]));
+        const userKey = `user_${newUser.id}`;
+        const userData = {
+          favorites: [],
+          avatar: newUser.avatar,
+          settings: {},
+        };
+        localStorage.setItem(userKey, JSON.stringify(userData));
+      } catch (error) {
+        console.error("Error saving new user to localStorage:", error);
+      }
+    } catch (error) {
+      console.error("Error creating new user:", error);
+      throw error;
+    }
   };
 
   /**
@@ -154,13 +215,39 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
   const updateUser = async (data: Partial<User>) => {
     if (!user) throw new Error("No user logged in");
 
-    const updatedUser = { ...user, ...data };
-    console.log("Updating user data:", updatedUser);
-    setUser(updatedUser);
+    try {
+      const updatedUser = { ...user, ...data };
+      console.log("Updating user data:", updatedUser);
+      setUser(updatedUser);
 
-    setUsers((prevUsers) =>
-      prevUsers.map((u) => (u.id === user.id ? updatedUser : u))
-    );
+      setUsers((prevUsers) =>
+        prevUsers.map((u) => (u.id === user.id ? updatedUser : u))
+      );
+
+      // Сохраняем обновленные данные в localStorage
+      try {
+        // Обновляем основные данные пользователя
+        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+        localStorage.setItem(
+          "users",
+          JSON.stringify(users.map((u) => (u.id === user.id ? updatedUser : u)))
+        );
+
+        // Обновляем персональные данные пользователя
+        const userKey = `user_${user.id}`;
+        const userData = {
+          favorites: updatedUser.favorites || [],
+          avatar: updatedUser.avatar,
+          settings: updatedUser.settings || {},
+        };
+        localStorage.setItem(userKey, JSON.stringify(userData));
+      } catch (error) {
+        console.error("Error saving updated user to localStorage:", error);
+      }
+    } catch (error) {
+      console.error("Error updating user:", error);
+      throw error;
+    }
   };
 
   /**
@@ -170,9 +257,17 @@ export function UserProvider({ children }: { children: React.ReactNode }) {
    * @throws Error if user not found
    */
   const deleteUser = async (userId: string) => {
-    setUsers((prevUsers) => prevUsers.filter((u) => u.id !== userId));
-    if (user?.id === userId) {
-      logout();
+    try {
+      // Удаляем персональные данные пользователя
+      localStorage.removeItem(`user_${userId}`);
+
+      setUsers((prevUsers) => prevUsers.filter((u) => u.id !== userId));
+      if (user?.id === userId) {
+        logout();
+      }
+    } catch (error) {
+      console.error("Error deleting user data:", error);
+      throw error;
     }
   };
 

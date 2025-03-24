@@ -72,7 +72,7 @@ export default function Settings() {
     }
 
     try {
-      await updateUser(currentUser.id, {
+      await updateUser({
         name: `${settings.firstName} ${settings.lastName}`.trim(),
         email: settings.email,
         ...(settings.password && { password: settings.password }),

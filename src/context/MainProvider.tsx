@@ -2,26 +2,42 @@ import { createContext, useEffect, useState } from "react";
 import axios from "axios";
 import { IMovie } from "../components/interfaces/Interface";
 
-export const mainContext = createContext<{
+interface MovieVideo {
+  key: string;
+  site: string;
+  type: string;
+  official: boolean;
+  published_at: string;
+}
+
+interface MovieDetails extends IMovie {
+  videos?: {
+    results: MovieVideo[];
+  };
+}
+
+interface MainContextType {
   trendingMovies: IMovie[];
   filteredMovies: IMovie[];
   setFilteredMovies: (movies: IMovie[]) => void;
-  selectedMovie: IMovie | null;
-  setSelectedMovie: (movie: IMovie | null) => void;
+  selectedMovie: MovieDetails | null;
+  setSelectedMovie: (movie: MovieDetails | null) => void;
   isSearching: boolean;
   setIsSearching: (isSearching: boolean) => void;
   searchMovies: (query: string) => void;
   filterMoviesByGenre: (genreId: number) => void;
   selectedGenre: number | null;
   clearSelectedGenre: () => void;
-  fetchMovieDetails: (movieId: number) => Promise<void>;
+  fetchMovieDetails: (id: number) => Promise<MovieDetails>;
   loading: boolean;
   movieTrailer: string | null;
   getAllMovies: () => Promise<void>;
   loadMoreMovies: () => void;
   currentPage: number;
   totalPages: number;
-}>({
+}
+
+export const mainContext = createContext<MainContextType>({
   trendingMovies: [],
   filteredMovies: [],
   setFilteredMovies: () => {},
@@ -33,7 +49,9 @@ export const mainContext = createContext<{
   filterMoviesByGenre: () => {},
   selectedGenre: null,
   clearSelectedGenre: () => {},
-  fetchMovieDetails: async () => {},
+  fetchMovieDetails: async () => {
+    throw new Error("Not implemented");
+  },
   loading: false,
   movieTrailer: null,
   getAllMovies: async () => {},
@@ -49,7 +67,7 @@ export default function MainProvider({
 }) {
   const [filteredMovies, setFilteredMovies] = useState<IMovie[]>([]);
   const [trendingMovies, setTrendingMovies] = useState<IMovie[]>([]);
-  const [selectedMovie, setSelectedMovie] = useState<IMovie | null>(null);
+  const [selectedMovie, setSelectedMovie] = useState<MovieDetails | null>(null);
   const [movieTrailer, setMovieTrailer] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [isSearching, setIsSearching] = useState<boolean>(false);
@@ -111,19 +129,22 @@ export default function MainProvider({
     }
   };
 
-  const fetchMovieDetails = async (movieId: number) => {
+  const fetchMovieDetails = async (id: number): Promise<MovieDetails> => {
     try {
-      const res = await axios.get(
-        `https://api.themoviedb.org/3/movie/${movieId}`,
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/movie/${id}?api_key=${API_HEADERS.Authorization}&append_to_response=videos`,
         {
-          params: { language: "en-US" },
           headers: API_HEADERS,
         }
       );
-      setSelectedMovie(res.data);
-      await fetchMovieTrailer(movieId);
+      if (!response.data) {
+        throw new Error("Failed to fetch movie details");
+      }
+      setSelectedMovie(response.data);
+      return response.data;
     } catch (error) {
-      console.error("Ошибка при загрузке деталей фильма:", error);
+      console.error("Error fetching movie details:", error);
+      throw error;
     }
   };
 

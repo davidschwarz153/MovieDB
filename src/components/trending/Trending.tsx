@@ -248,9 +248,9 @@ export default function Trending() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
           {showAll && (
             <>
-              <div className="flex bg-gray-900/30 backdrop-blur-sm rounded-full p-0.5 sm:p-1 w-full sm:w-auto justify-center sm:justify-start">
+              <div className="flex bg-gray-900/30 backdrop-blur-sm rounded-full p-1 w-full sm:w-auto justify-center">
                 <button
-                  className={`p-1.5 sm:p-2 rounded-full transition-all duration-300 ${
+                  className={`p-2 rounded-full transition-all duration-300 flex-1 sm:flex-none ${
                     viewMode === "list"
                       ? "bg-gray-600 text-white"
                       : "text-gray-200 hover:text-white"
@@ -258,10 +258,10 @@ export default function Trending() {
                   onClick={() => setViewMode("list")}
                   title="List view"
                 >
-                  <LayoutList size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  <LayoutList size={18} />
                 </button>
                 <button
-                  className={`p-1.5 sm:p-2 rounded-full transition-all duration-300 ${
+                  className={`p-2 rounded-full transition-all duration-300 flex-1 sm:flex-none ${
                     viewMode === "grid"
                       ? "bg-gray-600 text-white"
                       : "text-gray-200 hover:text-white"
@@ -269,13 +269,15 @@ export default function Trending() {
                   onClick={() => setViewMode("grid")}
                   title="Grid view"
                 >
-                  <LayoutGrid size={16} className="sm:w-[18px] sm:h-[18px]" />
+                  <LayoutGrid size={18} />
                 </button>
               </div>
-              <div className="flex flex-col sm:flex-row backdrop-blur-sm p-0.5 sm:p-1 text-xs sm:text-sm w-full sm:w-auto justify-center sm:justify-start gap-1 sm:gap-2">
+              <div className="flex flex-col sm:flex-row  p-1 w-full sm:w-auto justify-center gap-1">
                 <button
-                  className={`px-3 py-1 rounded-full transition-all duration-300 flex items-center justify-center gap-1 bg-gray-900/30 backdrop-blur-sm text-gray-200 hover:text-white ${
-                    sortBy === "rating" ? "bg-gray-600 text-white" : ""
+                  className={`px-3 py-1 rounded-full transition-all duration-300 flex items-center gap-1 flex-1 sm:flex-none justify-center ${
+                    sortBy === "rating"
+                      ? "bg-gray-600 text-white"
+                      : "text-gray-200 hover:text-white"
                   }`}
                   onClick={() => handleSortClick("rating")}
                   title={`Rating ${
@@ -298,8 +300,10 @@ export default function Trending() {
                   )}
                 </button>
                 <button
-                  className={`px-3 py-1 rounded-full transition-all duration-300 flex items-center justify-center gap-1 bg-gray-900/30 backdrop-blur-sm text-gray-200 hover:text-white ${
-                    sortBy === "name" ? "bg-gray-600 text-white" : ""
+                  className={`px-3 py-1 rounded-full transition-all duration-300 flex items-center gap-1 flex-1 sm:flex-none justify-center ${
+                    sortBy === "name"
+                      ? "bg-gray-600 text-white"
+                      : "text-gray-200 hover:text-white"
                   }`}
                   onClick={() => handleSortClick("name")}
                   title={`Alphabetical ${
@@ -322,8 +326,10 @@ export default function Trending() {
                   )}
                 </button>
                 <button
-                  className={`px-3 py-1 rounded-full transition-all duration-300 flex items-center justify-center gap-1 bg-gray-900/30 backdrop-blur-sm text-gray-200 hover:text-white ${
-                    sortBy === "date" ? "bg-gray-600 text-white" : ""
+                  className={`px-3 py-1 rounded-full transition-all duration-300 flex items-center gap-1 flex-1 sm:flex-none justify-center ${
+                    sortBy === "date"
+                      ? "bg-gray-600 text-white"
+                      : "text-gray-200 hover:text-white"
                   }`}
                   onClick={() => handleSortClick("date")}
                   title={`Date ${
@@ -349,7 +355,7 @@ export default function Trending() {
           )}
           <button
             onClick={() => setShowAll(!showAll)}
-            className="px-2 sm:px-3 py-1 rounded-full bg-gray-900/30 backdrop-blur-sm text-gray-200 hover:text-white transition-all duration-300 text-xs sm:text-sm w-full sm:w-auto text-center"
+            className="px-2 sm:px-3 py-2 rounded-full bg-gray-900/30 backdrop-blur-sm text-gray-200 hover:text-white transition-all duration-300 text-xs sm:text-sm w-full sm:w-auto text-center"
           >
             {showAll ? "Show Less" : "See All"}
           </button>

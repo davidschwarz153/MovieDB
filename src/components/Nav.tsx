@@ -1,6 +1,6 @@
 /**
  * Nav Component
- * 
+ *
  * Main navigation bar component that provides:
  * - Logo and home link
  * - Search functionality
@@ -9,10 +9,17 @@
  * - Responsive mobile menu
  */
 
-import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { Menu, X, Search, LogOut, User as UserIcon } from 'lucide-react';
-import { useUser } from '../context/UserContext';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Menu,
+  X,
+  Search,
+  LogOut,
+  User as UserIcon,
+  UserCircle,
+} from "lucide-react";
+import { useUser } from "../context/UserContext";
 
 export default function Nav() {
   // Navigation and user context
@@ -21,7 +28,7 @@ export default function Nav() {
 
   // Component state
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   /**
    * Handles search form submission
@@ -31,7 +38,7 @@ export default function Nav() {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
-      setSearchQuery('');
+      setSearchQuery("");
       setIsMenuOpen(false);
     }
   };
@@ -42,7 +49,7 @@ export default function Nav() {
    */
   const handleLogout = () => {
     logout();
-    navigate('/');
+    navigate("/");
     setIsMenuOpen(false);
   };
 
@@ -83,7 +90,18 @@ export default function Nav() {
             <div className="flex items-center space-x-4">
               {currentUser ? (
                 <>
-                  <span className="text-white">{currentUser.name}</span>
+                  <div className="flex items-center space-x-2">
+                    {currentUser.avatar ? (
+                      <img
+                        src={currentUser.avatar}
+                        alt={currentUser.name}
+                        className="w-8 h-8 rounded-full object-cover"
+                      />
+                    ) : (
+                      <UserCircle className="w-8 h-8 text-gray-300" />
+                    )}
+                    <span className="text-white">{currentUser.name}</span>
+                  </div>
                   {isAdmin && (
                     <Link
                       to="/dashboard"
@@ -148,7 +166,18 @@ export default function Nav() {
             {/* Mobile User Navigation */}
             {currentUser ? (
               <div className="space-y-2">
-                <p className="text-white px-2">{currentUser.name}</p>
+                <div className="flex items-center space-x-2 px-2">
+                  {currentUser.avatar ? (
+                    <img
+                      src={currentUser.avatar}
+                      alt={currentUser.name}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                  ) : (
+                    <UserCircle className="w-8 h-8 text-gray-300" />
+                  )}
+                  <p className="text-white">{currentUser.name}</p>
+                </div>
                 {isAdmin && (
                   <Link
                     to="/dashboard"
@@ -169,7 +198,7 @@ export default function Nav() {
             ) : (
               <Link
                 to="/login"
-                className="block px-2 py-1 text-white hover:text-purple-500 transition-colors flex items-center gap-2"
+                className="px-2 py-1 text-white hover:text-purple-500 transition-colors flex items-center gap-2"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <UserIcon size={20} />
@@ -181,4 +210,4 @@ export default function Nav() {
       )}
     </nav>
   );
-} 
+}

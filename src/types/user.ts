@@ -1,6 +1,13 @@
 export type UserRole = "user" | "admin";
 export type UserStatus = "active" | "banned";
 
+export interface UserSettings {
+  theme?: string;
+  language?: string;
+  notifications?: boolean;
+  [key: string]: any; // Для дополнительных пользовательских настроек
+}
+
 export interface User {
   id: string;
   name: string;
@@ -9,6 +16,7 @@ export interface User {
   status: UserStatus;
   avatar?: string;
   favorites?: string[];
+  settings?: UserSettings;
 }
 
 export interface UserSignUpData {
@@ -18,6 +26,7 @@ export interface UserSignUpData {
   role?: UserRole;
   status?: UserStatus;
   avatar?: string;
+  settings?: UserSettings;
 }
 
 export interface AdminUser extends User {
